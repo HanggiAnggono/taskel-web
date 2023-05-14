@@ -17,11 +17,20 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(231, 231, 231);
+}
+
+@layer components {
+  .btn-primary {
+    @apply text-white bg-blue-500 p-2 hover:bg-blue-700;
+  }
+
+  .btn-secondary {
+    @apply text-white bg-gray-500 p-2 hover:bg-gray-700;
+  }
+
+  input[type='text'],
+  input[type='password'] {
+    @apply text-black py-2 outline-none border-gray-500 border-2 active:border-blue-500 focus:border-blue-500;
+  }
 }
