@@ -1,11 +1,13 @@
 'use client'
 
 import { useApiNoAuth } from '@/api/api-service'
+import { useRouter } from "next/navigation"
 import { FormEvent } from 'react'
 
 export function LoginForm() {
+  const router = useRouter()
   const [{ loading, error, data }, mutate] = useApiNoAuth(
-    { url: '/api/login', method: 'post' },
+    { url: '/api/auth/login', method: 'post' },
     { manual: true }
   )
 
@@ -16,7 +18,7 @@ export function LoginForm() {
     const password = formData.get('password')
 
     mutate({ data: { username, password } }).then((resp) => {
-      console.log(resp)
+      router.replace('/')
     })
   }
   return (
