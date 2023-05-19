@@ -9,4 +9,4 @@ export const axiosAuth = axios.create()
 export const axiosServer = axios.create({baseURL: API_BASE_URL})
 
 export const useApiNoAuth = makeUseAxios({ axios: axiosNoAuth })
-export const usApi = makeUseAxios({ axios: axiosAuth })
+export const useApi = makeUseAxios({ axios: axiosAuth })

@@ -22,7 +22,7 @@ type TaskListResponse = {
 export default async function Home() {
   const getData = async () => {
     const cookie = cookies().toString()
-    const res = await fetch('http://localhost:8080/api/task/list', {
+    const res = await fetch('http://localhost:8080/api/task/list?pageSize=100', {
       headers: {
         'Content-Type': 'application/json',
         Cookie: cookie,
@@ -43,6 +43,8 @@ export default async function Home() {
         <table className="w-full">
           <thead className="border-b-2 border-gray-500">
             <th>Title</th>
+            <th>Assignee</th>
+            <th>Status</th>
             <th>Description</th>
           </thead>
           <tbody>
@@ -52,7 +54,11 @@ export default async function Home() {
                   key={task.ID}
                   className="hover:bg-blue-500 hover:text-white"
                 >
-                  <td className="p-3">{task.Title}</td>
+                  <td className="p-3">
+                    <a href={`/task/${task.ID}`}>{task.Title}</a>
+                  </td>
+                  <td className="p-3">{task.User?.Name}</td>
+                  <td className="p-3">{task.Status?.toUpperCase()}</td>
                   <td className="p-3">{task.Description}</td>
                 </tr>
               )
