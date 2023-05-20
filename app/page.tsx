@@ -1,19 +1,6 @@
+import { Task } from "@/types/task"
 import { cookies } from 'next/headers'
-import Image from 'next/image'
 import Link from "next/link"
-
-type Task = {
-  ID: number
-  Key: string
-  Title: string
-  Description: string
-  Status: 'todo' | 'inprogress' | 'done'
-  UserID: number | null
-  User: null
-  Watchers: null | []
-  CreatedAt: string
-  UpdatedAt: string
-}
 
 type TaskListResponse = {
   data: Task[]

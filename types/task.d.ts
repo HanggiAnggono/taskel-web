@@ -4,7 +4,7 @@ export type Task = {
   Key: string
   Title: string
   Description: null
-  Status: string
+  Status: 'todo' | 'inprogress' | 'done'
   UserID: number | null
   User: null
   Watchers: [] | null
