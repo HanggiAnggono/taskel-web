@@ -1,7 +1,7 @@
 'use client'
 
 import { useApi } from '@/api/api-service'
-import { Task } from "@/types/task"
+import { Task, User } from '@/types/task'
 import React from 'react'
 import { SelectOptions } from '../components/SelectOptions'
 
@@ -13,50 +13,96 @@ const options = [
 
 export function TaskDetailSidebar({ data }: { data: Task }) {
   const [{ loading, error, response }, mutate] = useApi(
-    { method: 'POST', url: `/api/task/${data.Key}/transition`, withCredentials: true },
+    {
+      method: 'POST',
+      url: `/api/task/${data.Key}/transition`,
+      withCredentials: true,
+    },
     {
       manual: true,
     }
   )
 
-  function handleChange(value: any) {
-    mutate({ data: { status: value.value } })
+  const [assignM, assign] = useApi(
+    {
+      method: 'PUT',
+      url: `/api/task/${data.Key}/edit`,
+      withCredentials: true,
+    },
+    {
+      manual: true,
     }
+  )
+
+  const [user] = useApi({
+    method: 'GET',
+    url: `/api/user/list?pageSize=100`,
+    withCredentials: true,
+  })
+  const users =
+    user.data?.data?.map((u: User) => {
+      return { value: u.ID, label: u.Name }
+    }) || []
+
+  function handleChangeStatus(value: any) {
+    mutate({ data: { status: value.value } })
+  }
+
+  function handleChangeUser(value: any) {
+    if (!value) return
+    assign({ data: { userId: value.value } })
+  }
 
   return (
     <div className="border-2 border-gray-700 rounded-md p-3">
-      <div className="flex items-center mb-3">
-        <span className="mr-3">Status:</span>
-        <span>
+      <div className="mb-3">
+        <div className="text-sm">Status:</div>
+        <div>
           <SelectOptions
             defaultValue={options.find((o) => o.value === data.Status)}
-            className="w-36"
+            className="w-10"
             options={options}
-            onChange={handleChange}
+            onChange={handleChangeStatus}
             isLoading={loading}
             styles={{
               control: (base, props) => {
                 const value = props.getValue().at(0)?.value
-                let backgroundColor = undefined;
+                let backgroundColor = undefined
                 switch (value) {
                   case 'inprogress':
-                    backgroundColor = '#00eeee';
-                    break;
+                    backgroundColor = '#00eeee'
+                    break
                   case 'done':
-                    backgroundColor = '#00ee00';
-                    break;
+                    backgroundColor = '#00ee00'
+                    break
                 }
 
                 return {
                   ...base,
-                  backgroundColor
+                  backgroundColor,
                 }
-              }
+              },
             }}
           />
-        </span>
+        </div>
       </div>
-      <span>Assignee: Hanggi Anggono</span>
+      <div className="">
+        <div className="text-sm">Assignee:</div>
+        <div>
+          {!user.loading && (
+            <SelectOptions
+              defaultValue={
+                user.loading
+                  ? undefined
+                  : users.find((o) => o.value === data.UserID)
+              }
+              options={users}
+              isLoading={assignM.loading}
+              onChange={handleChangeUser}
+            />
+          )}
+        </div>
+      </div>
     </div>
   )
 }

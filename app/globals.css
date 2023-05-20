@@ -20,6 +20,10 @@ body {
   background: white;
 }
 
+a {
+  @apply text-blue-900;
+}
+
 @layer components {
   .btn-primary {
     @apply text-white bg-blue-500 p-2 hover:bg-blue-700;

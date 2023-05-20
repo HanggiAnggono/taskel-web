@@ -3,11 +3,21 @@ export type Task = {
   ID: number
   Key: string
   Title: string
-  Description: null
+  Description: string
   Status: 'todo' | 'inprogress' | 'done'
   UserID: number | null
-  User: null
-  Watchers: [] | null
+  User: User
+  Watchers: User[] | null
+  CreatedAt: Date
+  UpdatedAt: Date
+}
+export type User = {
+  ID: number
+  Username: string
+  Name: string
+  Email: string
+  Password: string
+  Watches: Task[]
   CreatedAt: Date
   UpdatedAt: Date
 }

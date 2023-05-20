@@ -1,5 +1,7 @@
+import { Task } from "@/types/task"
 import { SelectOptions } from '@/ui/components/SelectOptions'
 import { IcUserCircle } from '@/ui/icons/IcUserCircle'
+import TaskDescriptionField from "@/ui/tasks/TaskDescriptionField"
 import { TaskDetailSidebar } from '@/ui/tasks/TaskDetailSidebar'
 import { cookies } from 'next/headers'
 
@@ -21,8 +23,7 @@ export default async function TaskPage({
     return data
   }
 
-  const { data } = await getData()
-  console.log(JSON.stringify(data, null, 2))
+  const { data }: {data: Task} = await getData()
 
   return (
     <div className="p-5">
@@ -30,10 +31,7 @@ export default async function TaskPage({
       <div className="flex ml-auto mb-10">
         <div className="w-7/12">
           <div className="hover:bg-gray-50">
-            <p>
-              {data.Description ||
-                'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident ad doloremque labore quibusdam dolorum commodi, perferendis hic sint reiciendis laborum omnis, similique maxime voluptatem dolor corrupti. Excepturi enim ducimus blanditiis.'}
-            </p>
+            <TaskDescriptionField description={data.Description} taskKey={data.Key} />
           </div>
         </div>
         <div className="w-5/12">

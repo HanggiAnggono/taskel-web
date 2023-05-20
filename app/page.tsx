@@ -40,14 +40,18 @@ export default async function Home() {
               return (
                 <tr
                   key={task.ID}
-                  className="hover:bg-blue-500 hover:text-white"
+                  className="hover:bg-blue-50"
                 >
                   <td className="p-3">
                     <Link href={`/task/${task.Key}`}>
                       {task.Title}
                     </Link>
                   </td>
-                  <td className="p-3">{task.User?.Name}</td>
+                  <td className="p-3">
+                    <Link href={`/user/${task.UserID}`}>
+                      {task.User?.Name}
+                    </Link>
+                  </td>
                   <td className="p-3">{task.Status?.toUpperCase()}</td>
                 </tr>
               )
