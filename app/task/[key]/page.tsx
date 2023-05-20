@@ -3,11 +3,15 @@ import { IcUserCircle } from '@/ui/icons/IcUserCircle'
 import { TaskDetailSidebar } from '@/ui/tasks/TaskDetailSidebar'
 import { cookies } from 'next/headers'
 
-export default async function TaskPage({ params }: { params: { id: string } }) {
-  const { id } = params
+export default async function TaskPage({
+  params,
+}: {
+  params: { key: string }
+}) {
+  const { key: key } = params
   const getData = async () => {
     const cookie = cookies().toString()
-    const res = await fetch(`http://localhost:8080/api/task/${id}`, {
+    const res = await fetch(`http://localhost:8080/api/task/${key}`, {
       headers: {
         'Content-Type': 'application/json',
         Cookie: cookie,

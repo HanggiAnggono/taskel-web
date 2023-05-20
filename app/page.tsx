@@ -1,8 +1,10 @@
 import { cookies } from 'next/headers'
 import Image from 'next/image'
+import Link from "next/link"
 
 type Task = {
   ID: number
+  Key: string
   Title: string
   Description: string
   Status: 'todo' | 'inprogress' | 'done'
@@ -42,10 +44,9 @@ export default async function Home() {
 
         <table className="w-full">
           <thead className="border-b-2 border-gray-500">
-            <th>Title</th>
-            <th>Assignee</th>
-            <th>Status</th>
-            <th>Description</th>
+            <th align="left">Title</th>
+            <th align="left">Assignee</th>
+            <th align="left">Status</th>
           </thead>
           <tbody>
             {data.map((task) => {
@@ -55,11 +56,12 @@ export default async function Home() {
                   className="hover:bg-blue-500 hover:text-white"
                 >
                   <td className="p-3">
-                    <a href={`/task/${task.ID}`}>{task.Title}</a>
+                    <Link href={`/task/${task.Key}`}>
+                      {task.Title}
+                    </Link>
                   </td>
                   <td className="p-3">{task.User?.Name}</td>
                   <td className="p-3">{task.Status?.toUpperCase()}</td>
-                  <td className="p-3">{task.Description}</td>
                 </tr>
               )
             })}

@@ -1,20 +1,9 @@
 'use client'
 
 import { useApi } from '@/api/api-service'
+import { Task } from "@/types/task"
 import React from 'react'
 import { SelectOptions } from '../components/SelectOptions'
-
-type TaskDetail = {
-  ID: number
-  Title: string
-  Description: null
-  Status: string
-  UserID: number | null
-  User: null
-  Watchers: [] | null
-  CreatedAt: Date
-  UpdatedAt: Date
-}
 
 const options = [
   { value: 'todo', label: 'To Do' },
@@ -22,9 +11,9 @@ const options = [
   { value: 'done', label: 'Done' },
 ]
 
-export function TaskDetailSidebar({ data }: { data: TaskDetail }) {
+export function TaskDetailSidebar({ data }: { data: Task }) {
   const [{ loading, error, response }, mutate] = useApi(
-    { method: 'POST', url: `/api/task/${data.ID}/transition`, withCredentials: true },
+    { method: 'POST', url: `/api/task/${data.Key}/transition`, withCredentials: true },
     {
       manual: true,
     }
