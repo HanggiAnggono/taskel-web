@@ -20,7 +20,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(data)
   } catch (err) {
-    console.log({ err })
     return NextResponse.json(err.response.data, { status: 400 })
   }
 }

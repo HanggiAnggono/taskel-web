@@ -4,10 +4,8 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const cookie = request.cookies
   const token = cookie.get('token')
-  console.log(request.nextUrl.pathname)
 
   if (!token && !request.nextUrl.pathname.startsWith('/auth/login')) {
-    console.log({ token })
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 }

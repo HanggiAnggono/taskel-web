@@ -23,7 +23,6 @@ export default async function Home() {
   }
 
   const { data } = await getData()
-  console.log(JSON.stringify(data, null, 2))
 
   return (
     <main>
