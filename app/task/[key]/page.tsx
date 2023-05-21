@@ -1,7 +1,7 @@
-import { Task } from "@/types/task"
-import { SelectOptions } from '@/ui/components/SelectOptions'
+import { API_BASE_URL } from '@/api/api-service'
+import { Task } from '@/types/task'
 import { IcUserCircle } from '@/ui/icons/IcUserCircle'
-import TaskDescriptionField from "@/ui/tasks/TaskDescriptionField"
+import TaskDescriptionField from '@/ui/tasks/TaskDescriptionField'
 import { TaskDetailSidebar } from '@/ui/tasks/TaskDetailSidebar'
 import { cookies } from 'next/headers'
 
@@ -13,7 +13,7 @@ export default async function TaskPage({
   const { key: key } = params
   const getData = async () => {
     const cookie = cookies().toString()
-    const res = await fetch(`http://localhost:8080/api/task/${key}`, {
+    const res = await fetch(`${API_BASE_URL}/api/task/${key}`, {
       headers: {
         'Content-Type': 'application/json',
         Cookie: cookie,
@@ -23,7 +23,7 @@ export default async function TaskPage({
     return data
   }
 
-  const { data }: {data: Task} = await getData()
+  const { data }: { data: Task } = await getData()
 
   return (
     <div className="p-5">
@@ -31,7 +31,10 @@ export default async function TaskPage({
       <div className="flex ml-auto mb-10">
         <div className="w-7/12">
           <div className="hover:bg-gray-50">
-            <TaskDescriptionField description={data.Description} taskKey={data.Key} />
+            <TaskDescriptionField
+              description={data.Description}
+              taskKey={data.Key}
+            />
           </div>
         </div>
         <div className="w-5/12">

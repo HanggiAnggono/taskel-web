@@ -1,6 +1,7 @@
-import { Task } from "@/types/task"
+import { API_BASE_URL } from '@/api/api-service'
+import { Task } from '@/types/task'
 import { cookies } from 'next/headers'
-import Link from "next/link"
+import Link from 'next/link'
 
 type TaskListResponse = {
   data: Task[]
@@ -11,7 +12,7 @@ type TaskListResponse = {
 export default async function Home() {
   const getData = async () => {
     const cookie = cookies().toString()
-    const res = await fetch('http://localhost:8080/api/task/list?pageSize=100', {
+    const res = await fetch(`${API_BASE_URL}/api/task/list?pageSize=100`, {
       headers: {
         'Content-Type': 'application/json',
         Cookie: cookie,
@@ -38,19 +39,12 @@ export default async function Home() {
           <tbody>
             {data.map((task) => {
               return (
-                <tr
-                  key={task.ID}
-                  className="hover:bg-blue-50"
-                >
+                <tr key={task.ID} className="hover:bg-blue-50">
                   <td className="p-3">
-                    <Link href={`/task/${task.Key}`}>
-                      {task.Title}
-                    </Link>
+                    <Link href={`/task/${task.Key}`}>{task.Title}</Link>
                   </td>
                   <td className="p-3">
-                    <Link href={`/user/${task.UserID}`}>
-                      {task.User?.Name}
-                    </Link>
+                    <Link href={`/user/${task.UserID}`}>{task.User?.Name}</Link>
                   </td>
                   <td className="p-3">{task.Status?.toUpperCase()}</td>
                 </tr>
