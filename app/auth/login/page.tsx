@@ -13,7 +13,7 @@ export default async function Login() {
     return res?.data
   }
 
-  const data = await getProfile()
+  const data = await getProfile().catch(() => null)
 
   if (data?.data?.userId) {
     redirect('/')
