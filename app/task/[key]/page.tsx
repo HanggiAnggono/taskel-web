@@ -1,4 +1,5 @@
-import { API_BASE_URL } from '@/api/api-service'
+import { API_BASE_URL, axiosServer } from '@/api/api-service'
+import { Comment } from '@/types/comment'
 import { Task } from '@/types/task'
 import { IcUserCircle } from '@/ui/icons/IcUserCircle'
 import TaskDescriptionField from '@/ui/tasks/TaskDescriptionField'
@@ -13,17 +14,31 @@ export default async function TaskPage({
   const { key: key } = params
   const getData = async () => {
     const cookie = cookies().toString()
-    const res = await fetch(`${API_BASE_URL}/api/task/${key}`, {
+    const res = await axiosServer.get(`${API_BASE_URL}/api/task/${key}`, {
       headers: {
         'Content-Type': 'application/json',
         Cookie: cookie,
       },
     })
-    const data = await res.json()
-    return data
+    return res?.data
+  }
+
+  const getComments = async ({ id }: { id: number }) => {
+    const res = await axiosServer.get(`/api/comments/list`, {
+      headers: { cookie: cookies().toString() },
+      params: {
+        commentable_type: 'tasks',
+        commentable_id: id,
+      },
+    })
+
+    return res?.data
   }
 
   const { data }: { data: Task } = await getData()
+  const { data: comments }: { data: Comment[] } = await getComments({
+    id: data.ID,
+  }).catch(() => [])
 
   return (
     <div className="p-5">
@@ -44,16 +59,19 @@ export default async function TaskPage({
       <div className="bg-gray-50 p-2">
         <h1 className="text-2xl">Comments</h1>
         <div>
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="flex mb-4">
+          {comments.map((comment) => (
+            <div key={comment.ID} className="flex mb-4">
               <div className="mr-3">
                 <IcUserCircle className="w-8" />
               </div>
               <div>
-                <span>Hanggi Anggono {new Date().toLocaleString()} </span>
-                <p>
-                  This Task has been started previously but need some works now
-                </p>
+                <span>
+                  {comment.Author?.Name}{' '}
+                  <span className="text-gray-400">
+                    {new Date(comment.CreatedAt)?.toLocaleString?.()}
+                  </span>{' '}
+                </span>
+                <p>{comment.Comment}</p>
               </div>
             </div>
           ))}
