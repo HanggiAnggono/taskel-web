@@ -1,6 +1,7 @@
 import { API_BASE_URL, axiosServer } from '@/api/api-service'
 import { Comment } from '@/types/comment'
 import { Task } from '@/types/task'
+import { Comments } from "@/ui/components/Comments"
 import { IcUserCircle } from '@/ui/icons/IcUserCircle'
 import TaskDescriptionField from '@/ui/tasks/TaskDescriptionField'
 import { TaskDetailSidebar } from '@/ui/tasks/TaskDetailSidebar'
@@ -58,24 +59,7 @@ export default async function TaskPage({
       </div>
       <div className="bg-gray-50 p-2">
         <h1 className="text-2xl">Comments</h1>
-        <div>
-          {comments.map((comment) => (
-            <div key={comment.ID} className="flex mb-4">
-              <div className="mr-3">
-                <IcUserCircle className="w-8" />
-              </div>
-              <div>
-                <span>
-                  {comment.Author?.Name}{' '}
-                  <span className="text-gray-400">
-                    {new Date(comment.CreatedAt)?.toLocaleString?.()}
-                  </span>{' '}
-                </span>
-                <p>{comment.Comment}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <Comments comments={comments} />
       </div>
     </div>
   )
