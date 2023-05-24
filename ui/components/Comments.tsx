@@ -5,6 +5,7 @@ import React from 'react'
 import { IcUserCircle } from '../icons/IcUserCircle'
 import { useForm } from 'react-hook-form'
 import { useApi } from '@/api/api-service'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   commentableType: string
@@ -18,7 +19,8 @@ type CommentForm = {
 
 export function Comments(props: Props) {
   const { comments = [] } = props
-  const { register, handleSubmit } = useForm<CommentForm>()
+  const { register, handleSubmit, reset } = useForm<CommentForm>()
+  const router = useRouter()
   const [commentM, createComment] = useApi(
     { url: '/api/comments/create', method: 'POST', withCredentials: true },
     { manual: true }
@@ -31,6 +33,9 @@ export function Comments(props: Props) {
         commentable_type: props.commentableType,
         commentable_id: props.commentableId,
       },
+    }).then(() => {
+      reset()
+      router.refresh()
     })
   }
 
@@ -47,7 +52,8 @@ export function Comments(props: Props) {
           <div style={{ width: '60%' }}>
             <textarea
               id="comment"
-              className="w-full"
+              className="w-full p-2"
+              rows={7}
               {...register('comment')}
             ></textarea>
             <button disabled={commentM.loading} className="btn-primary">
