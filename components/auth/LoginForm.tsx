@@ -1,15 +1,17 @@
 'use client'
 
 import { useApiNoAuth } from '@/api/api-service'
-import { useRouter } from "next/navigation"
+import { AuthService } from '@/types/service'
+import { useRouter } from 'next/navigation'
 import { FormEvent } from 'react'
 
 export function LoginForm() {
   const router = useRouter()
-  const [{ loading, error, data }, mutate] = useApiNoAuth(
-    { url: '/api/auth/login', method: 'post' },
-    { manual: true }
-  )
+  const [{ loading, error, data }, mutate] =
+    useApiNoAuth<AuthService.LoginResponse>(
+      { url: '/api/auth/login', method: 'post' },
+      { manual: true }
+    )
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -21,6 +23,7 @@ export function LoginForm() {
       router.replace('/')
     })
   }
+
   return (
     <div className="bg-white p-5">
       <h1>Login</h1>
