@@ -17,26 +17,24 @@ export function Comments(props: Props) {
           <div>
             <label htmlFor="comment">Add New Comment</label>
           </div>
-          <div style={{width: '60%'}}>
+          <div style={{ width: '60%' }}>
             <textarea id="comment" className="w-full"></textarea>
             <button className="btn-primary">Comment</button>
           </div>
         </form>
       </div>
       {comments.map((comment) => (
-        <div key={comment.ID} className="flex mb-4">
-          <div className="mr-3">
-            <IcUserCircle className="w-8" />
-          </div>
-          <div>
-            <span>
+        <div key={comment.ID} className="mb-6">
+          <div className="flex items-center">
+            <IcUserCircle className="w-8" height="2rem" />
+            <span className="ml-2">
               {comment.Author?.Name}{' '}
-              <span className="text-gray-400">
+              <span className="text-gray-400 ml-3">
                 {new Date(comment.CreatedAt)?.toLocaleString?.()}
               </span>{' '}
             </span>
-            <p>{comment.Comment}</p>
           </div>
+          <p>{comment.Comment}</p>
         </div>
       ))}
     </div>
