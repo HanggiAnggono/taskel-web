@@ -1,7 +1,7 @@
 import { API_BASE_URL, axiosServer } from '@/api/api-service'
 import { Comment } from '@/types/comment'
 import { Task } from '@/types/task'
-import { Comments } from "@/ui/components/Comments"
+import { Comments } from '@/ui/components/Comments'
 import { IcUserCircle } from '@/ui/icons/IcUserCircle'
 import TaskDescriptionField from '@/ui/tasks/TaskDescriptionField'
 import { TaskDetailSidebar } from '@/ui/tasks/TaskDetailSidebar'
@@ -15,7 +15,7 @@ export default async function TaskPage({
   const { key: key } = params
   const getData = async () => {
     const cookie = cookies().toString()
-    const res = await axiosServer.get(`${API_BASE_URL}/api/task/${key}`, {
+    const res = await axiosServer.get(`/api/task/${key}`, {
       headers: {
         'Content-Type': 'application/json',
         Cookie: cookie,
@@ -25,7 +25,7 @@ export default async function TaskPage({
   }
 
   const getComments = async ({ id }: { id: number }) => {
-    const res = await axiosServer.get(`/api/comments/list`, {
+    const res = await axiosServer.get(`/api/comments/list?pageSize=100`, {
       headers: { cookie: cookies().toString() },
       params: {
         commentable_type: 'tasks',
@@ -59,7 +59,11 @@ export default async function TaskPage({
       </div>
       <div className="bg-gray-50 p-2">
         <h1 className="text-2xl">Comments</h1>
-        <Comments comments={comments} />
+        <Comments
+          commentableId={data.ID}
+          commentableType="tasks"
+          comments={comments}
+        />
       </div>
     </div>
   )

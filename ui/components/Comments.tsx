@@ -3,23 +3,56 @@
 import { Comment } from '@/types/comment'
 import React from 'react'
 import { IcUserCircle } from '../icons/IcUserCircle'
+import { useForm } from 'react-hook-form'
+import { useApi } from '@/api/api-service'
 
 type Props = {
+  commentableType: string
+  commentableId: number
   comments: Comment[]
 }
 
+type CommentForm = {
+  comment: string
+}
+
 export function Comments(props: Props) {
-  const { comments } = props
+  const { comments = [] } = props
+  const { register, handleSubmit } = useForm<CommentForm>()
+  const [commentM, createComment] = useApi(
+    { url: '/api/comments/create', method: 'POST', withCredentials: true },
+    { manual: true }
+  )
+
+  const handleFormSubmit = (data: CommentForm) => {
+    createComment({
+      data: {
+        comment: data.comment,
+        commentable_type: props.commentableType,
+        commentable_id: props.commentableId,
+      },
+    })
+  }
+
   return (
     <div className="mt-10">
       <div className="mb-10">
-        <form className="flex flex-col">
+        <form
+          onSubmit={handleSubmit(handleFormSubmit)}
+          className="flex flex-col"
+        >
           <div>
             <label htmlFor="comment">Add New Comment</label>
           </div>
           <div style={{ width: '60%' }}>
-            <textarea id="comment" className="w-full"></textarea>
-            <button className="btn-primary">Comment</button>
+            <textarea
+              id="comment"
+              className="w-full"
+              {...register('comment')}
+            ></textarea>
+            <button disabled={commentM.loading} className="btn-primary">
+              Comment
+            </button>
           </div>
         </form>
       </div>
