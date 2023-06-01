@@ -24,13 +24,18 @@ a {
   @apply text-blue-900;
 }
 
+dialog::backdrop {
+  background-color: black;
+  opacity: 0.5;
+}
+
 @layer components {
   .btn-primary {
-    @apply text-white bg-blue-500 p-2 hover:bg-blue-700;
+    @apply text-white bg-blue-500 p-2 hover:bg-blue-700 disabled:bg-blue-300;
   }
 
   .btn-secondary {
-    @apply text-white bg-gray-500 p-2 hover:bg-gray-700;
+    @apply text-white bg-gray-500 p-2 hover:bg-gray-700 disabled:bg-gray-300;
   }
 
   input[type='text'],

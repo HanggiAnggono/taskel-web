@@ -1,5 +1,7 @@
+import { Modal } from '@/ui/components/Modal'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import { LogoutButton } from '@/ui/components/LogoutButton'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="flex border-b-2 h-16 fixed top-0 w-full bg-white z-50 p-4">
+          <LogoutButton />
+        </div>
+        <div className="mt-16"></div>
+        {children}
+      </body>
     </html>
   )
 }
