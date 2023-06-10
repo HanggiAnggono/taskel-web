@@ -1,4 +1,5 @@
 import { axiosNoAuth, axiosServer } from '@/api/api-service'
+import { HttpStatusCode } from "axios"
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
@@ -12,14 +13,20 @@ export async function POST(request: Request) {
       password: reqBody.password,
     })
 
-    const data = await res.data
+
+    const data = res.data
     const cookieStore = cookies()
+    console.log({token: data.token})
     cookieStore.set('token', data.token, {
       path: '/',
     })
 
-    return NextResponse.json(data)
+    return new NextResponse(JSON.stringify(data), {
+      status: HttpStatusCode.Ok
+    })
   } catch (err) {
-    return NextResponse.json(err.response.data, { status: 400 })
+    return new NextResponse(JSON.stringify(err.response.data,), {
+      status: HttpStatusCode.BadRequest
+    })
   }
 }

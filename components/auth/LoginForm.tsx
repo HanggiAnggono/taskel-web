@@ -20,7 +20,10 @@ export function LoginForm() {
     const password = formData.get('password')
 
     mutate({ data: { username, password } }).then((resp) => {
+      console.log({resp})
       router.replace('/')
+    }).catch(err => {
+      console.error(err)
     })
   }
 
