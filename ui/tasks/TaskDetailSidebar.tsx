@@ -60,7 +60,7 @@ export function TaskDetailSidebar({ data }: { data: Task }) {
         <div>
           <SelectOptions
             defaultValue={options.find((o) => o.value === data.Status)}
-            className="w-10"
+            className="w-full"
             options={options}
             onChange={handleChangeStatus}
             isLoading={loading}
