@@ -19,7 +19,7 @@ export const LogoutButton = () => {
   )
 
   const close = () => {
-    document.querySelector('#logoutModal')?.close()
+    Modal.close('logoutModal')
   }
 
   const handleLogout = () => {
@@ -34,7 +34,7 @@ export const LogoutButton = () => {
       <a
         href="#"
         onClick={(e) => {
-          document.querySelector('#logoutModal')?.showModal()
+          Modal.open('logoutModal')
         }}
       >
         Logout

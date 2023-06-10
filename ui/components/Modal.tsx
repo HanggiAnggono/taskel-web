@@ -11,11 +11,10 @@ export function Modal(
   return <dialog className="shadow-md" {...props} />
 }
 
-Modal.useModal = () => {
-  const [isOpen, setIsOpen] = React.useState(false)
-  return {
-    isOpen,
-    open: () => setIsOpen(true),
-    close: () => setIsOpen(false),
-  }
+Modal.open = (id: string) => {
+  document.querySelector(`#${id}`)?.showModal()
+}
+
+Modal.close = (id: string) => {
+  document.querySelector(`#${id}`)?.close()
 }
