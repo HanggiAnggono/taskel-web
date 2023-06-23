@@ -3,6 +3,9 @@
 import { useApi } from '@/api/api-service'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { SelectOptions } from "../components/SelectOptions"
+import { User } from "@/types/task"
+import { SuccessResponse } from "@/types/service"
 
 type CreateTaskFormValues = {
   title: string
@@ -18,6 +21,12 @@ export const CreateTaskForm = () => {
     CreateTaskFormValues,
     CreateTaskFormValues
   >({ url: '/api/task', method: 'post', withCredentials: true }, { manual: true })
+
+  const [users] = useApi<SuccessResponse<User[]>>({
+    method: 'GET',
+    url: `/api/user/list?pageSize=100`,
+    withCredentials: true,
+  })
 
   const onSubmit = (values: CreateTaskFormValues) => {
     createTask({
@@ -38,6 +47,20 @@ export const CreateTaskForm = () => {
             <label>Title *</label>
           </div>
           <textarea {...register('title')} className="w-full" required />
+        </div>
+        <div className="mb-5">
+          <div>
+            <label>User</label>
+          </div>
+          <SelectOptions
+            // defaultValue={options.find((o) => o.value === data.Status)}
+            className="w-full"
+            options={users?.data?.data?.map(user => {
+              return {label: user.Username, value: user.ID}
+            })}
+            // onChange={handleChangeStatus}
+            // isLoading={loading}
+          />
         </div>
         <div>
           <div>
