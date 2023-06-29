@@ -22,7 +22,7 @@ export default async function Home() {
     return data as TaskListResponse
   }
 
-  const { data } = await getData()
+  const { data = [] } = await getData()
 
   return (
     <main>

@@ -3,9 +3,9 @@
 import { useApi } from '@/api/api-service'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { SelectOptions } from "../components/SelectOptions"
-import { User } from "@/types/task"
-import { SuccessResponse } from "@/types/service"
+import { SelectOptions } from '../components/SelectOptions'
+import { User } from '@/types/task'
+import { SuccessResponse } from '@/types/service'
 
 type CreateTaskFormValues = {
   title: string
@@ -14,19 +14,29 @@ type CreateTaskFormValues = {
   userId: number
 }
 
-export const CreateTaskForm = () => {
+type Props = {
+  onSuccess: () => void
+}
+
+export const CreateTaskForm = ({ onSuccess }: Props) => {
   const { register, handleSubmit, reset } = useForm<CreateTaskFormValues>()
   const [{ loading }, createTask] = useApi<
     any,
     CreateTaskFormValues,
     CreateTaskFormValues
-  >({ url: '/api/task', method: 'post', withCredentials: true }, { manual: true })
+  >(
+    { url: '/api/task', method: 'post', withCredentials: true },
+    { manual: true }
+  )
 
-  const [users] = useApi<SuccessResponse<User[]>>({
-    method: 'GET',
-    url: `/api/user/list?pageSize=100`,
-    withCredentials: true,
-  })
+  const [users, getUsers] = useApi<SuccessResponse<User[]>>(
+    {
+      method: 'GET',
+      url: `/api/user/list?pageSize=100`,
+      withCredentials: true,
+    },
+    { manual: true }
+  )
 
   const onSubmit = (values: CreateTaskFormValues) => {
     createTask({
@@ -36,8 +46,15 @@ export const CreateTaskForm = () => {
         status: 'todo',
         userId: 3,
       },
+    }).then(() => {
+      reset()
+      onSuccess()
     })
   }
+
+  useEffect(() => {
+    getUsers()
+  }, [getUsers])
 
   return (
     <div style={{ width: '70vw' }}>
@@ -55,8 +72,8 @@ export const CreateTaskForm = () => {
           <SelectOptions
             // defaultValue={options.find((o) => o.value === data.Status)}
             className="w-full"
-            options={users?.data?.data?.map(user => {
-              return {label: user.Username, value: user.ID}
+            options={users?.data?.data?.map((user) => {
+              return { label: user.Username, value: user.ID }
             })}
             // onChange={handleChangeStatus}
             // isLoading={loading}
